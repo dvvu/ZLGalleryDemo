@@ -35,7 +35,7 @@
                     
                     if(image) {
                         
-                        [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:100] forKey:asset.localIdentifier];
+                        [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:200] forKey:asset.localIdentifier];
                     }
                 }
                 
@@ -65,7 +65,7 @@
            
                 if (image) {
                     
-                    [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:100] forKey:asset.localIdentifier];
+                    [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:200] forKey:asset.localIdentifier];
                 }
             }];
         }
@@ -99,7 +99,7 @@
             
             if (image) {
                 
-                [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:100] forKey:url.absoluteString];
+                [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:200] forKey:url.absoluteString];
             }
         } else {
             
@@ -111,7 +111,7 @@
             
             if (image) {
                 
-                [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:100] forKey:url.absoluteString];
+                [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:200] forKey:url.absoluteString];
             }
         }
         

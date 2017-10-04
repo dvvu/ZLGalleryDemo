@@ -58,7 +58,6 @@
 - (void)setupCollectionView {
     
     _layout = [[UICollectionViewFlowLayout alloc] init];
-    _layout.minimumInteritemSpacing = 0;
     _layout.minimumLineSpacing = 3;
     _layout.itemSize = CGSizeMake((self.view.bounds.size.width-12)/3, (self.view.bounds.size.width-12)/3);
     [_layout setScrollDirection:UICollectionViewScrollDirectionVertical];
