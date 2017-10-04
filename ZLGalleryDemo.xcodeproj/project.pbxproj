@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1370926572BB55235203C05 /* Pods_ZLGalleryDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 999853D78D02B1FEE0162940 /* Pods_ZLGalleryDemo.framework */; };
 		EA2FEB691F849AD300EE3495 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEB681F849AD300EE3495 /* main.m */; };
 		EA2FEB6C1F849AD300EE3495 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEB6B1F849AD300EE3495 /* AppDelegate.m */; };
 		EA2FEB6F1F849AD300EE3495 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEB6E1F849AD300EE3495 /* ViewController.m */; };
@@ -14,6 +15,15 @@
 		EA2FEB741F849AD300EE3495 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA2FEB731F849AD300EE3495 /* Assets.xcassets */; };
 		EA2FEB771F849AD300EE3495 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA2FEB751F849AD300EE3495 /* LaunchScreen.storyboard */; };
 		EA2FEB821F849AD400EE3495 /* ZLGalleryDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEB811F849AD400EE3495 /* ZLGalleryDemoTests.m */; };
+		EA2FEB8F1F849B0E00EE3495 /* ImageCacher.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEB8E1F849B0E00EE3495 /* ImageCacher.m */; };
+		EA2FEB931F849B2400EE3495 /* ThreadSafeForMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEB921F849B2400EE3495 /* ThreadSafeForMutableArray.m */; };
+		EA2FEB991F849B3500EE3495 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEB961F849B3500EE3495 /* MediaItem.m */; };
+		EA2FEB9A1F849B3500EE3495 /* MediaLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEB981F849B3500EE3495 /* MediaLoader.m */; };
+		EA2FEBA71F849B5B00EE3495 /* GalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEBA41F849B5B00EE3495 /* GalleryViewController.m */; };
+		EA2FEBA81F849B5B00EE3495 /* GalleryCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEBA61F849B5B00EE3495 /* GalleryCollectionViewDataSource.m */; };
+		EA2FEBAC1F849EA200EE3495 /* GalleryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEBAB1F849EA200EE3495 /* GalleryCollectionViewCell.m */; };
+		EA2FEBAF1F849EB900EE3495 /* GalleryCollectionViewCellObject.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEBAE1F849EB900EE3495 /* GalleryCollectionViewCellObject.m */; };
+		EA2FEBB81F85084B00EE3495 /* UIImage+Supporter.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEBB71F85084B00EE3495 /* UIImage+Supporter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		73D238E56EAB76B9B0B8B7A2 /* Pods-ZLGalleryDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLGalleryDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ZLGalleryDemo/Pods-ZLGalleryDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		999853D78D02B1FEE0162940 /* Pods_ZLGalleryDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ZLGalleryDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA2FEB641F849AD300EE3495 /* ZLGalleryDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZLGalleryDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA2FEB681F849AD300EE3495 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		EA2FEB6A1F849AD300EE3495 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -40,6 +52,26 @@
 		EA2FEB7D1F849AD400EE3495 /* ZLGalleryDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZLGalleryDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA2FEB811F849AD400EE3495 /* ZLGalleryDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZLGalleryDemoTests.m; sourceTree = "<group>"; };
 		EA2FEB831F849AD400EE3495 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA2FEB8D1F849B0E00EE3495 /* ImageCacher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCacher.h; sourceTree = "<group>"; };
+		EA2FEB8E1F849B0E00EE3495 /* ImageCacher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCacher.m; sourceTree = "<group>"; };
+		EA2FEB911F849B2400EE3495 /* ThreadSafeForMutableArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadSafeForMutableArray.h; sourceTree = "<group>"; };
+		EA2FEB921F849B2400EE3495 /* ThreadSafeForMutableArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadSafeForMutableArray.m; sourceTree = "<group>"; };
+		EA2FEB951F849B3500EE3495 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
+		EA2FEB961F849B3500EE3495 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
+		EA2FEB971F849B3500EE3495 /* MediaLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaLoader.h; sourceTree = "<group>"; };
+		EA2FEB981F849B3500EE3495 /* MediaLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaLoader.m; sourceTree = "<group>"; };
+		EA2FEBA31F849B5B00EE3495 /* GalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryViewController.h; sourceTree = "<group>"; };
+		EA2FEBA41F849B5B00EE3495 /* GalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryViewController.m; sourceTree = "<group>"; };
+		EA2FEBA51F849B5B00EE3495 /* GalleryCollectionViewDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryCollectionViewDataSource.h; sourceTree = "<group>"; };
+		EA2FEBA61F849B5B00EE3495 /* GalleryCollectionViewDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryCollectionViewDataSource.m; sourceTree = "<group>"; };
+		EA2FEBA91F849B6400EE3495 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		EA2FEBAA1F849EA200EE3495 /* GalleryCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryCollectionViewCell.h; sourceTree = "<group>"; };
+		EA2FEBAB1F849EA200EE3495 /* GalleryCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryCollectionViewCell.m; sourceTree = "<group>"; };
+		EA2FEBAD1F849EB900EE3495 /* GalleryCollectionViewCellObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryCollectionViewCellObject.h; sourceTree = "<group>"; };
+		EA2FEBAE1F849EB900EE3495 /* GalleryCollectionViewCellObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryCollectionViewCellObject.m; sourceTree = "<group>"; };
+		EA2FEBB61F85084B00EE3495 /* UIImage+Supporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Supporter.h"; sourceTree = "<group>"; };
+		EA2FEBB71F85084B00EE3495 /* UIImage+Supporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Supporter.m"; sourceTree = "<group>"; };
+		F81EA1D6C44FCAB28F480D22 /* Pods-ZLGalleryDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLGalleryDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZLGalleryDemo/Pods-ZLGalleryDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B1370926572BB55235203C05 /* Pods_ZLGalleryDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,12 +93,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C68E30AA41DFC9A15F7E1C5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				73D238E56EAB76B9B0B8B7A2 /* Pods-ZLGalleryDemo.debug.xcconfig */,
+				F81EA1D6C44FCAB28F480D22 /* Pods-ZLGalleryDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		BF8E059AD67F936F2287B549 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				999853D78D02B1FEE0162940 /* Pods_ZLGalleryDemo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EA2FEB5B1F849AD300EE3495 = {
 			isa = PBXGroup;
 			children = (
 				EA2FEB661F849AD300EE3495 /* ZLGalleryDemo */,
 				EA2FEB801F849AD400EE3495 /* ZLGalleryDemoTests */,
 				EA2FEB651F849AD300EE3495 /* Products */,
+				1C68E30AA41DFC9A15F7E1C5 /* Pods */,
+				BF8E059AD67F936F2287B549 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -81,14 +133,12 @@
 		EA2FEB661F849AD300EE3495 /* ZLGalleryDemo */ = {
 			isa = PBXGroup;
 			children = (
-				EA2FEB6A1F849AD300EE3495 /* AppDelegate.h */,
-				EA2FEB6B1F849AD300EE3495 /* AppDelegate.m */,
-				EA2FEB6D1F849AD300EE3495 /* ViewController.h */,
-				EA2FEB6E1F849AD300EE3495 /* ViewController.m */,
-				EA2FEB701F849AD300EE3495 /* Main.storyboard */,
-				EA2FEB731F849AD300EE3495 /* Assets.xcassets */,
-				EA2FEB751F849AD300EE3495 /* LaunchScreen.storyboard */,
-				EA2FEB781F849AD300EE3495 /* Info.plist */,
+				EA2FEBB91F8509A200EE3495 /* Constant&support */,
+				EA2FEB8C1F849B0500EE3495 /* ImageCahe */,
+				EA2FEB901F849B1A00EE3495 /* ThreadSafeForMutableArray */,
+				EA2FEB9B1F849B4100EE3495 /* GalleryCell&CellObject */,
+				EA2FEB941F849B2D00EE3495 /* PhotoLoader */,
+				EA2FEBA21F849B5300EE3495 /* GalaryViewController */,
 				EA2FEB671F849AD300EE3495 /* Supporting Files */,
 			);
 			path = ZLGalleryDemo;
@@ -97,6 +147,14 @@
 		EA2FEB671F849AD300EE3495 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EA2FEB6A1F849AD300EE3495 /* AppDelegate.h */,
+				EA2FEB6B1F849AD300EE3495 /* AppDelegate.m */,
+				EA2FEB6D1F849AD300EE3495 /* ViewController.h */,
+				EA2FEB6E1F849AD300EE3495 /* ViewController.m */,
+				EA2FEB701F849AD300EE3495 /* Main.storyboard */,
+				EA2FEB731F849AD300EE3495 /* Assets.xcassets */,
+				EA2FEB751F849AD300EE3495 /* LaunchScreen.storyboard */,
+				EA2FEB781F849AD300EE3495 /* Info.plist */,
 				EA2FEB681F849AD300EE3495 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -111,6 +169,67 @@
 			path = ZLGalleryDemoTests;
 			sourceTree = "<group>";
 		};
+		EA2FEB8C1F849B0500EE3495 /* ImageCahe */ = {
+			isa = PBXGroup;
+			children = (
+				EA2FEB8D1F849B0E00EE3495 /* ImageCacher.h */,
+				EA2FEB8E1F849B0E00EE3495 /* ImageCacher.m */,
+			);
+			name = ImageCahe;
+			sourceTree = "<group>";
+		};
+		EA2FEB901F849B1A00EE3495 /* ThreadSafeForMutableArray */ = {
+			isa = PBXGroup;
+			children = (
+				EA2FEB911F849B2400EE3495 /* ThreadSafeForMutableArray.h */,
+				EA2FEB921F849B2400EE3495 /* ThreadSafeForMutableArray.m */,
+			);
+			name = ThreadSafeForMutableArray;
+			sourceTree = "<group>";
+		};
+		EA2FEB941F849B2D00EE3495 /* PhotoLoader */ = {
+			isa = PBXGroup;
+			children = (
+				EA2FEB951F849B3500EE3495 /* MediaItem.h */,
+				EA2FEB961F849B3500EE3495 /* MediaItem.m */,
+				EA2FEB971F849B3500EE3495 /* MediaLoader.h */,
+				EA2FEB981F849B3500EE3495 /* MediaLoader.m */,
+			);
+			name = PhotoLoader;
+			sourceTree = "<group>";
+		};
+		EA2FEB9B1F849B4100EE3495 /* GalleryCell&CellObject */ = {
+			isa = PBXGroup;
+			children = (
+				EA2FEBAA1F849EA200EE3495 /* GalleryCollectionViewCell.h */,
+				EA2FEBAB1F849EA200EE3495 /* GalleryCollectionViewCell.m */,
+				EA2FEBAD1F849EB900EE3495 /* GalleryCollectionViewCellObject.h */,
+				EA2FEBAE1F849EB900EE3495 /* GalleryCollectionViewCellObject.m */,
+			);
+			name = "GalleryCell&CellObject";
+			sourceTree = "<group>";
+		};
+		EA2FEBA21F849B5300EE3495 /* GalaryViewController */ = {
+			isa = PBXGroup;
+			children = (
+				EA2FEBA51F849B5B00EE3495 /* GalleryCollectionViewDataSource.h */,
+				EA2FEBA61F849B5B00EE3495 /* GalleryCollectionViewDataSource.m */,
+				EA2FEBA31F849B5B00EE3495 /* GalleryViewController.h */,
+				EA2FEBA41F849B5B00EE3495 /* GalleryViewController.m */,
+			);
+			name = GalaryViewController;
+			sourceTree = "<group>";
+		};
+		EA2FEBB91F8509A200EE3495 /* Constant&support */ = {
+			isa = PBXGroup;
+			children = (
+				EA2FEBA91F849B6400EE3495 /* Constants.h */,
+				EA2FEBB61F85084B00EE3495 /* UIImage+Supporter.h */,
+				EA2FEBB71F85084B00EE3495 /* UIImage+Supporter.m */,
+			);
+			name = "Constant&support";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -118,9 +237,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = EA2FEB861F849AD400EE3495 /* Build configuration list for PBXNativeTarget "ZLGalleryDemo" */;
 			buildPhases = (
+				96A0CB9CD2EA13C2DD0CCC8C /* [CP] Check Pods Manifest.lock */,
 				EA2FEB601F849AD300EE3495 /* Sources */,
 				EA2FEB611F849AD300EE3495 /* Frameworks */,
 				EA2FEB621F849AD300EE3495 /* Resources */,
+				43FD4BE9BAC86974865E2A09 /* [CP] Embed Pods Frameworks */,
+				ABA9F031D3DFD636C6620BA5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -160,6 +282,7 @@
 				TargetAttributes = {
 					EA2FEB631F849AD300EE3495 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = X2HJQ2687F;
 						ProvisioningStyle = Automatic;
 					};
 					EA2FEB7C1F849AD400EE3495 = {
@@ -208,14 +331,71 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		43FD4BE9BAC86974865E2A09 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZLGalleryDemo/Pods-ZLGalleryDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		96A0CB9CD2EA13C2DD0CCC8C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		ABA9F031D3DFD636C6620BA5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ZLGalleryDemo/Pods-ZLGalleryDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		EA2FEB601F849AD300EE3495 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA2FEB9A1F849B3500EE3495 /* MediaLoader.m in Sources */,
+				EA2FEBAC1F849EA200EE3495 /* GalleryCollectionViewCell.m in Sources */,
+				EA2FEBA81F849B5B00EE3495 /* GalleryCollectionViewDataSource.m in Sources */,
+				EA2FEB931F849B2400EE3495 /* ThreadSafeForMutableArray.m in Sources */,
 				EA2FEB6F1F849AD300EE3495 /* ViewController.m in Sources */,
+				EA2FEBAF1F849EB900EE3495 /* GalleryCollectionViewCellObject.m in Sources */,
+				EA2FEBB81F85084B00EE3495 /* UIImage+Supporter.m in Sources */,
+				EA2FEB8F1F849B0E00EE3495 /* ImageCacher.m in Sources */,
 				EA2FEB6C1F849AD300EE3495 /* AppDelegate.m in Sources */,
 				EA2FEB691F849AD300EE3495 /* main.m in Sources */,
+				EA2FEBA71F849B5B00EE3495 /* GalleryViewController.m in Sources */,
+				EA2FEB991F849B3500EE3495 /* MediaItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,7 +478,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -341,7 +521,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -351,9 +531,12 @@
 		};
 		EA2FEB871F849AD400EE3495 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 73D238E56EAB76B9B0B8B7A2 /* Pods-ZLGalleryDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = X2HJQ2687F;
 				INFOPLIST_FILE = ZLGalleryDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = VNG.ZLGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -362,9 +545,12 @@
 		};
 		EA2FEB881F849AD400EE3495 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F81EA1D6C44FCAB28F480D22 /* Pods-ZLGalleryDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = X2HJQ2687F;
 				INFOPLIST_FILE = ZLGalleryDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = VNG.ZLGalleryDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -414,6 +600,7 @@
 				EA2FEB881F849AD400EE3495 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EA2FEB891F849AD400EE3495 /* Build configuration list for PBXNativeTarget "ZLGalleryDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +609,7 @@
 				EA2FEB8B1F849AD400EE3495 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
