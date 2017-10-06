@@ -14,6 +14,7 @@
 
 @interface MediaItem : NSObject
 
+@property (nonatomic, assign) BOOL isSelected;
 @property (nonatomic) NSDate* creationDate;
 @property (nonatomic) AVURLAsset* urlAsset;
 @property (nonatomic) double videoDuration;

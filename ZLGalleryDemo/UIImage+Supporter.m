@@ -7,12 +7,13 @@
 //
 
 #import "UIImage+Supporter.h"
+#import "Constants.h"
 
 @implementation UIImage (Supporter)
 
 #pragma mark - resizeImage
 
-- (UIImage *)resizeImage:(CGFloat)edgeSquare {
+- (UIImage *)resizeImageToFit {
     
     UIImage* image = self;
     
@@ -23,17 +24,17 @@
     
     if (imageWidth > imageHeight) {
         
-        CGFloat scaleRatio = edgeSquare / imageHeight;
+        CGFloat scaleRatio = IMAGE_SIZE / imageHeight;
         scaleTransform = CGAffineTransformMakeScale(scaleRatio, scaleRatio);
         origin = CGPointMake(-(imageWidth - imageHeight) / 2, 0);
     } else {
         
-        CGFloat scaleRatio = edgeSquare / imageWidth;
+        CGFloat scaleRatio = IMAGE_SIZE / imageWidth;
         scaleTransform = CGAffineTransformMakeScale(scaleRatio, scaleRatio);
         origin = CGPointMake(0, -(imageHeight - imageWidth) / 2);
     }
     
-    CGSize size = CGSizeMake(edgeSquare, edgeSquare);
+    CGSize size = CGSizeMake(IMAGE_SIZE, IMAGE_SIZE);
     
     // Begin ImageContext
     UIGraphicsBeginImageContext(size);

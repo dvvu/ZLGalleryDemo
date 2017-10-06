@@ -58,6 +58,7 @@
     CGFloat scale = FONTSIZE_SCALE;
     
     _galaryImageView = [[UIImageView alloc] init];
+    _galaryImageView.image = [UIImage imageNamed:@"ic_loading"];
     [self addSubview:_galaryImageView];
     
     _playImageView = [[UIImageView alloc] init];

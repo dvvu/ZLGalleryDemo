@@ -42,7 +42,7 @@
                         galleryCollectionViewCell.galaryImageView.image = image;
                     });
                     
-                    [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:200] forKey:_identifier];
+                    [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:_identifier];
                 }
             }];
         }

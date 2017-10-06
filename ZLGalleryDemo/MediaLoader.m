@@ -14,9 +14,8 @@
 @interface MediaLoader ()
 
 @property (nonatomic) ThreadSafeForMutableArray* mediaItems;
-@property (nonatomic) dispatch_queue_t photoPermissionQueue;
 @property (nonatomic) dispatch_queue_t mediaLoaderQueue;
-@property (nonatomic)  BOOL isSupportiOS8;
+@property (nonatomic) BOOL isSupportiOS8;
 @property (nonatomic) int maxloaderItems;
 
 @end
@@ -48,7 +47,6 @@
         _isSupportiOS8 = iOS_VERSION_GREATER_THAN_OR_EQUAL_TO(8.0);
         _mediaItems = [[ThreadSafeForMutableArray alloc] init];
         _mediaLoaderQueue = dispatch_queue_create("MEDIA_LOADER_QUEUE", DISPATCH_QUEUE_SERIAL);
-        _photoPermissionQueue = dispatch_queue_create("PHOTO_PERMISSION_QUEUE", DISPATCH_QUEUE_SERIAL);
     }
     
     return self;
@@ -56,49 +54,129 @@
 
 #pragma mark - checkPermission
 
-- (void)checkPermission:(void(^)(NSError *))completion {
+- (MediaAuthStatus)checkPermission {
     
     if (_isSupportiOS8) {
         
-        [self checkPHAssetPermission:^(NSError* error) {
-            
-            if(completion) {
+        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+        
+        switch (status) {
                 
-                completion(error);
-            }
-        }];
+            case PHAuthorizationStatusAuthorized:
+                
+                return MediaAuthStatusAuthorized;
+                break;
+            case PHAuthorizationStatusDenied:
+                
+                return MediaAuthStatusDenied;
+                break;
+            case PHAuthorizationStatusNotDetermined:
+                
+                return MediaAuthStatusNotDetermined;
+                break;
+            case PHAuthorizationStatusRestricted:
+                
+                return MediaAuthStatusRestricted;
+                break;
+            default:
+                
+                return MediaAuthStatusNotDetermined;
+                break;
+        }
     } else {
         
-        [self checkAssetsLibraryPermissions:^(NSError* error) {
-           
-            if(completion) {
+        ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
+        
+        switch (status) {
                 
-                completion(error);
-            }
-        }];
+            case ALAuthorizationStatusAuthorized:
+                
+                return MediaAuthStatusAuthorized;
+                break;
+            case ALAuthorizationStatusDenied:
+                
+                return MediaAuthStatusDenied;
+                break;
+            case ALAuthorizationStatusNotDetermined:
+                
+                return MediaAuthStatusNotDetermined;
+                break;
+            case ALAuthorizationStatusRestricted:
+                
+                return MediaAuthStatusRestricted;
+                break;
+            default:
+                
+                return MediaAuthStatusNotDetermined;
+                break;
+        }
     }
+}
+
+#pragma mark - checkPHNotDeterminedPermission
+
+- (void)requestAuthCallbackQueue:(dispatch_queue_t)queue completion:(void(^)(BOOL granted, MediaAuthStatus))completion {
+    
+    dispatch_queue_t callbackQueue = queue != nil ? queue : dispatch_get_main_queue();
+    
+     if (_isSupportiOS8) {
+   
+         [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+             
+             if (status == PHAuthorizationStatusAuthorized) {
+                 
+                 dispatch_async(callbackQueue, ^ {
+                     
+                     if (completion) {
+                         
+                          completion(YES, MediaAuthStatusAuthorized);
+                     }
+                 });
+             } else {
+                 
+                 dispatch_async(callbackQueue, ^ {
+                     
+                     if (completion) {
+                         
+                         completion(NO, MediaAuthStatusAuthorized);
+                     }
+                 });
+             }
+         }];
+     } else {
+         
+         dispatch_async(callbackQueue, ^ {
+             
+             if (completion) {
+                 
+                 completion(YES, MediaAuthStatusAuthorized);
+             }
+         });
+     }
 }
 
 #pragma mark - getMediaItems
 
-- (void)getMediaItems:(void(^)(NSArray *))completion {
+- (void)getMediaItemsCallbackQueue:(dispatch_queue_t)queue completion:(void(^)(NSArray* mediaItmes, NSError *))completion {
+    
+    dispatch_queue_t callbackQueue = queue != nil ? queue : dispatch_get_main_queue();
     
     if (_isSupportiOS8) {
         
-        [self getMediaItemsFromPHAsset:^(NSArray* mediaItems) {
+        [self getMediaItemsFromPHAsset:callbackQueue completion:^(NSArray* mediaItems, NSError* error) {
             
             if (completion) {
                 
-                completion(mediaItems);
+                completion(mediaItems, error);
             }
         }];
     } else {
         
-        [self getMediaItemsFromAssetsLibrary:^(NSArray* mediaItems) {
+        [self getMediaItemsFromAssetsLibrary:callbackQueue completion:^(NSArray* mediaItems, NSError* error) {
             
             if (completion) {
                 
-                completion(mediaItems);
+                completion(mediaItems, nil);
             }
         }];
     }
@@ -106,159 +184,55 @@
 
 #pragma mark - getListMediaFromPHAsset
 
-- (void)getMediaItemsFromPHAsset:(void(^)(NSArray *))completion {
+- (void)getMediaItemsFromPHAsset:(dispatch_queue_t)callbackQueue completion:(void(^)(NSArray *, NSError *))completion {
     
     dispatch_async(_mediaLoaderQueue,^{
     
         PHFetchResult* assetsFetchResults = [PHAsset fetchAssetsWithOptions:nil];
         
-        if (_maxloaderItems > assetsFetchResults.count) {
+        if (!assetsFetchResults.count) {
             
-            _maxloaderItems = (int)assetsFetchResults.count;
-        }
-        
-        for (int i = 0; i < _maxloaderItems; i++) {
-            
-            PHAsset* asset = assetsFetchResults[i];
-
-            [[MediaItem alloc] initWithPHAsset:asset completion:^(MediaItem* mediaItem) {
+            dispatch_async(callbackQueue, ^ {
                 
-                if (!mediaItem) {
+                if (completion) {
                     
-                    _maxloaderItems--;
-                } else {
-                    
-                    [_mediaItems addObject:mediaItem];
+                    completion(nil, nil);
                 }
-                
-                if (_maxloaderItems == _mediaItems.count) {
-                    
-                    NSArray* array = [_mediaItems sortedArrayUsingDescriptors:@"creationDate"];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                        
-                        if (completion) {
-                            
-                            completion(array);
-                        }
-                    });
-                }
-            }];
-        }
-    });
-}
-
-#pragma mark - checkPermissionPhoto
-
-- (void)checkPHAssetPermission:(void(^)(NSError *))completion {
-    
-    dispatch_async(_photoPermissionQueue, ^ {
-        
-        PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
-        
-        if (status == PHAuthorizationStatusAuthorized) {
+            });
+        } else {
             
-            // Access has been granted.
-            if (completion) {
+            if (assetsFetchResults.count < _maxloaderItems) {
                 
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    
-                    completion(nil);
-                });
+                _maxloaderItems = (int)assetsFetchResults.count;
             }
-        } else if (status == PHAuthorizationStatusDenied) {
             
-            // Access has been denied.
-            if (completion) {
+            for (int i = 0; i < _maxloaderItems; i++) {
                 
-                dispatch_async(dispatch_get_main_queue(), ^ {
+                PHAsset* asset = assetsFetchResults[i];
+                
+                [[MediaItem alloc] initWithPHAsset:asset completion:^(MediaItem* mediaItem) {
                     
-                    completion([NSError errorWithDomain:@"" code:PHAuthorizationStatusDenied userInfo:nil]);
-                });
-            }
-        } else if (status == PHAuthorizationStatusNotDetermined) {
-            
-            // Access has not been determined.
-            [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
-                
-                if (status == PHAuthorizationStatusAuthorized) {
-                    // Access has been granted.
-                    if (completion) {
+                    if (!mediaItem) {
                         
-                        dispatch_async(dispatch_get_main_queue(), ^ {
+                        _maxloaderItems--;
+                    } else {
+                        
+                        [_mediaItems addObject:mediaItem];
+                    }
+                    
+                    if (_maxloaderItems == _mediaItems.count) {
+                        
+                        NSArray* array = [_mediaItems sortedArrayUsingDescriptors:@"creationDate"];
+                        
+                        dispatch_async(callbackQueue, ^ {
                             
-                            completion(nil);
+                            if (completion) {
+                                
+                                completion(array, nil);
+                            }
                         });
                     }
-                } else {
-                    // Access has been denied.
-                    if (completion) {
-                        
-                        dispatch_async(dispatch_get_main_queue(), ^ {
-                            
-                            completion([NSError errorWithDomain:@"" code:PHAuthorizationStatusDenied userInfo:nil]);
-                        });
-                    }
-                }
-            }];
-        } else if (status == PHAuthorizationStatusRestricted) {
-            
-            if (completion) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    
-                    completion([NSError errorWithDomain:@"" code:PHAuthorizationStatusRestricted userInfo:nil]);
-                });
-            }
-        }
-    });
-}
-
-#pragma mark - checkAssetsLibraryPermissions
-
-- (void)checkAssetsLibraryPermissions:(void(^)(NSError *))completion {
-    
-    dispatch_async(_photoPermissionQueue, ^ {
-        
-        ALAuthorizationStatus status = [ALAssetsLibrary authorizationStatus];
-        
-        if (status == PHAuthorizationStatusAuthorized) {
-            
-            // Access has been granted.
-            if (completion) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    
-                    completion(nil);
-                });
-            }
-        } else if (status == ALAuthorizationStatusDenied) {
-            
-            // Access has been denied.
-            if (completion) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    
-                    completion([NSError errorWithDomain:@"" code:ALAuthorizationStatusDenied userInfo:nil]);
-                });
-            }
-        } else if (status == ALAuthorizationStatusNotDetermined) {
-            
-            if (completion) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    
-                    completion(nil);
-                });
-            }
-        } else if (status == ALAuthorizationStatusRestricted) {
-            
-            if (completion) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    
-                    completion([NSError errorWithDomain:@"" code:ALAuthorizationStatusRestricted userInfo:nil]);
-                });
+                }];
             }
         }
     });
@@ -266,9 +240,9 @@
 
 #pragma mark - getMediaItemsFromAssetsLibrary
 
-- (void)getMediaItemsFromAssetsLibrary:(void(^)(NSArray *))completion {
+- (void)getMediaItemsFromAssetsLibrary:(dispatch_queue_t)callbackQueue completion:(void(^)(NSArray *, NSError *))completion {
     
-    dispatch_async(_photoPermissionQueue, ^ {
+    dispatch_async(_mediaLoaderQueue, ^ {
     
         ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
         
@@ -299,11 +273,11 @@
                             
                             NSArray* array = [_mediaItems sortedArrayUsingDescriptors:@"creationDate"];
                             
-                            dispatch_async(dispatch_get_main_queue(), ^ {
+                            dispatch_async(callbackQueue, ^ {
                                 
                                 if (completion) {
                         
-                                    completion(array);
+                                    completion(array, nil);
                                 }
                             });
                         }
@@ -313,6 +287,14 @@
         } failureBlock:^(NSError* error) {
             
             NSLog(@"Error Description %@",[error description]);
+           
+            dispatch_async(callbackQueue, ^ {
+                
+                if (completion) {
+                    
+                    completion(nil, error);
+                }
+            });
         }];
     });
 }

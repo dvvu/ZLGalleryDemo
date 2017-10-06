@@ -22,6 +22,7 @@
 
 #define FONTSIZE_SCALE [[UIScreen mainScreen] bounds].size.height == 480 ? 1 : ([[UIScreen mainScreen] bounds].size.height == 568 ? 1.12 : ([[UIScreen mainScreen] bounds].size.width == 375 ? 1.21 : ([[UIScreen mainScreen] bounds].size.width == 414 ? 1.23 : 1.23)))
 
+#define IMAGE_SIZE [[UIScreen mainScreen] bounds].size.width > [[UIScreen mainScreen] bounds].size.height ? ([[UIScreen mainScreen] bounds].size.width-12)/3 : ([[UIScreen mainScreen] bounds].size.height-12)
 #endif /* Constants_h */
 
 #define CONTACT @"Contact"
@@ -73,9 +74,11 @@ typedef enum {
 
 typedef enum {
     
-    PHAuthStatusDenied = 1,
-    PHAuthStatusRestricted = 2
-} PHAuthStatus;
+    MediaAuthStatusDenied = 1,
+    MediaAuthStatusRestricted = 2,
+    MediaAuthStatusAuthorized = 3,
+    MediaAuthStatusNotDetermined = 4
+} MediaAuthStatus;
 
 
 

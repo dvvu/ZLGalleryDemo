@@ -11,6 +11,6 @@
 @interface UIImage (Supporter)
 
 #pragma mark - resizeImage
-- (UIImage *)resizeImage:(CGFloat)edgeSquare;
+- (UIImage *)resizeImageToFit;
 
 @end

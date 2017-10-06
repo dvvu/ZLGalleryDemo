@@ -16,59 +16,61 @@
 
 - (void)initWithPHAsset:(PHAsset *)asset completion:(void(^)(MediaItem *))completion {
     
-    if (asset) {
+    PHAssetMediaType type = asset.mediaType;
+    
+    if (type == PHAssetMediaTypeImage) {
         
-        _creationDate = [asset creationDate];
-        _identifier = asset.localIdentifier;
-        
-        if (asset.mediaType == PHAssetMediaTypeImage) {
+        [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData* imageData, NSString* dataUTI, UIImageOrientation orientation, NSDictionary* info) {
             
-            [[PHImageManager defaultManager] requestImageDataForAsset:asset options:nil resultHandler:^(NSData* imageData, NSString* dataUTI, UIImageOrientation orientation, NSDictionary* info) {
+            if ([info objectForKey:@"PHImageFileURLKey"]) {
                 
-                if ([info objectForKey:@"PHImageFileURLKey"]) {
-                    
-                    _inputType = AssetInput;
-                    _imageUrl = [info objectForKey:@"PHImageFileURLKey"];
-                    _mediaType = MediaImageType;
-                    
-                    UIImage* image = [UIImage imageWithData:imageData];
-                    
-                    if(image) {
-                        
-                        [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:200] forKey:asset.localIdentifier];
-                    }
-                }
-                
-                if (completion) {
-                    
-                    completion(self);
-                }
-            }];
-        } else {
-        
-            [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset* _Nullable assetVideo, AVAudioMix* _Nullable audioMix, NSDictionary* _Nullable info) {
-                
-                AVURLAsset* playerAsset = (AVURLAsset*)assetVideo;
-                
+                _imageUrl = [info objectForKey:@"PHImageFileURLKey"];
+                _creationDate = [asset creationDate];
+                _identifier = asset.localIdentifier;
+                _mediaType = MediaImageType;
                 _inputType = AssetInput;
-                _videoUrl = [playerAsset URL];
-                _mediaType = MediaVideoType;
-                _urlAsset = playerAsset;
-                _videoDuration = ceil(playerAsset.duration.value/playerAsset.duration.timescale);
+                _isSelected = NO;
                 
                 if (completion) {
                     
                     completion(self);
                 }
                 
-                UIImage* image = [self thumbnailFromVideoURL:_videoUrl atCMTime:playerAsset.duration];
-           
+                UIImage* image = [UIImage imageWithData:imageData];
+                
                 if (image) {
                     
-                    [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:200] forKey:asset.localIdentifier];
+                    [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:asset.localIdentifier];
                 }
-            }];
-        }
+            }
+        }];
+    } else if (type == PHAssetMediaTypeVideo) {
+        
+        [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset* _Nullable assetVideo, AVAudioMix* _Nullable audioMix, NSDictionary* _Nullable info) {
+            
+            AVURLAsset* playerAsset = (AVURLAsset*)assetVideo;
+            
+            _videoDuration = ceil(playerAsset.duration.value/playerAsset.duration.timescale);
+            _creationDate = [asset creationDate];
+            _identifier = asset.localIdentifier;
+            _inputType = AssetInput;
+            _videoUrl = [playerAsset URL];
+            _mediaType = MediaVideoType;
+            _urlAsset = playerAsset;
+            _isSelected = NO;
+            
+            if (completion) {
+                
+                completion(self);
+            }
+            
+            UIImage* image = [self thumbnailFromVideoURL:_videoUrl atCMTime:playerAsset.duration];
+            
+            if (image) {
+                
+                [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:asset.localIdentifier];
+            }
+        }];
     } else {
         
         if (completion) {
@@ -82,43 +84,52 @@
 
 - (void)initWithALAsset:(ALAsset *)asset completion:(void(^)(MediaItem *))completion {
     
-    if (asset) {
+    NSString* type = [asset valueForProperty:ALAssetPropertyType];
+    
+    if (type == ALAssetTypePhoto) {
         
         ALAssetRepresentation* defaultRepresentation = [asset defaultRepresentation];
         NSURL* url = [defaultRepresentation url];
-        
         _creationDate = [asset valueForProperty:ALAssetPropertyDate];
         _identifier = url.absoluteString;
+        _mediaType = MediaImageType;
+        _imageUrl = url;
+        _isSelected = NO;
         
-        if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
+        UIImage* image = [UIImage imageWithCGImage:[defaultRepresentation fullScreenImage]];
+        
+        if (image) {
             
-            _imageUrl = url;
-            _mediaType = MediaImageType;
-            
-            UIImage* image = [UIImage imageWithCGImage:[defaultRepresentation fullScreenImage]];
-            
-            if (image) {
-                
-                [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:200] forKey:url.absoluteString];
-            }
-        } else {
-            
-            _videoUrl = url;
-            _mediaType = MediaVideoType;
-            _videoDuration = [[asset valueForProperty:ALAssetPropertyDuration] doubleValue];
-            
-            UIImage* image = [UIImage imageWithCGImage:[defaultRepresentation fullScreenImage]];
-            
-            if (image) {
-                
-                [[ImageCacher sharedInstance] setImageForKey:[image resizeImage:200] forKey:url.absoluteString];
-            }
+            [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:url.absoluteString];
         }
         
         if (completion) {
             
             completion(self);
         }
+    } else if (type == ALAssetTypeVideo) {
+        
+        ALAssetRepresentation* defaultRepresentation = [asset defaultRepresentation];
+        NSURL* url = [defaultRepresentation url];
+        _videoDuration = [[asset valueForProperty:ALAssetPropertyDuration] doubleValue];
+        _creationDate = [asset valueForProperty:ALAssetPropertyDate];
+        _identifier = url.absoluteString;
+        _mediaType = MediaVideoType;
+        _videoUrl = url;
+        _isSelected = NO;
+    
+        UIImage* image = [UIImage imageWithCGImage:[defaultRepresentation fullScreenImage]];
+        
+        if (image) {
+            
+            [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:url.absoluteString];
+        }
+        
+        if (completion) {
+            
+            completion(self);
+        }
+        
     } else {
         
         if (completion) {
@@ -142,12 +153,7 @@
     NSError* error = nil;
     CMTime actualTime;
     CGImageRef imageRef = [imageGenerator copyCGImageAtTime:time actualTime:&actualTime error:&error];
-    
-    if (imageRef) {
-        
-        image = [[UIImage alloc] initWithCGImage:imageRef];
-    }
-    
+    image = [[UIImage alloc] initWithCGImage:imageRef];
     CGImageRelease(imageRef);
     
     return image;

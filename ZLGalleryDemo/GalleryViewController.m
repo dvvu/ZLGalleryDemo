@@ -18,7 +18,7 @@
 @property (nonatomic) GalleryCollectionViewDataSource* galleryCollectionViewDataSource;
 @property (nonatomic) UICollectionView* galleryCollectionView;
 @property (nonatomic) UICollectionViewFlowLayout* layout;
-
+@property (nonatomic) UIActivityIndicatorView* activity;
 @end
 
 @implementation GalleryViewController
@@ -58,6 +58,7 @@
 - (void)setupCollectionView {
     
     _layout = [[UICollectionViewFlowLayout alloc] init];
+    _layout.minimumInteritemSpacing = 3;
     _layout.minimumLineSpacing = 3;
     _layout.itemSize = CGSizeMake((self.view.bounds.size.width-12)/3, (self.view.bounds.size.width-12)/3);
     [_layout setScrollDirection:UICollectionViewScrollDirectionVertical];
@@ -74,34 +75,55 @@
     [_galleryCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"GalaryCollectionViewCell"];
     _galleryCollectionViewDataSource = [[GalleryCollectionViewDataSource alloc] initWithCollectionView:_galleryCollectionView];
    
-    UIActivityIndicatorView* activity = [[UIActivityIndicatorView alloc] init];
-    [activity setBackgroundColor:[UIColor clearColor]];
-    [activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
-    [self.view addSubview:activity];
+    _activity = [[UIActivityIndicatorView alloc] init];
+    [_activity setBackgroundColor:[UIColor clearColor]];
+    [_activity setActivityIndicatorViewStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:_activity];
     
-    [activity mas_makeConstraints:^(MASConstraintMaker* make) {
+    [_activity mas_makeConstraints:^(MASConstraintMaker* make) {
         
         make.center.equalTo(self.view);
         make.width.and.height.equalTo(@40);
     }];
     
-    [activity startAnimating];
+    [_activity startAnimating];
     
-    [[MediaLoader sharedInstance] checkPermission:^(NSError* error) {
+    MediaAuthStatus status = [[MediaLoader sharedInstance] checkPermission];
+ 
+    if (status == MediaAuthStatusAuthorized) {
         
-        if (error) {
+        [self getMediaItems];
+    } else if( status == MediaAuthStatusNotDetermined) {
+        
+        [[MediaLoader sharedInstance] requestAuthCallbackQueue:dispatch_get_main_queue() completion:^(BOOL granted, MediaAuthStatus mediaStatus) {
             
-            [self showMessage:@"Please! Enable to use" withTitle:error.localizedDescription];
-        } else {
-            
-            [[MediaLoader sharedInstance] getMediaItems:^(NSArray* mediaItems) {
+            if (granted) {
                 
-                [_galleryCollectionViewDataSource setupData:mediaItems];
-              
-                [activity stopAnimating];
-                [activity removeFromSuperview];
-            }];
-        }
+                [self getMediaItems];
+            } else {
+                
+                [self showMessage:@"Please! Enable to use" withTitle:@""];
+                [_activity stopAnimating];
+                [_activity removeFromSuperview];
+            }
+        }];
+    } else {
+        
+        [self showMessage:@"Please! Enable to use" withTitle:@""];
+        [_activity stopAnimating];
+        [_activity removeFromSuperview];
+    }
+}
+
+#pragma mark - getMediaItems
+
+- (void)getMediaItems {
+    
+    [[MediaLoader sharedInstance] getMediaItemsCallbackQueue:dispatch_get_main_queue() completion:^(NSArray* mediaItems, NSError* error) {
+        
+        [_galleryCollectionViewDataSource setupData:mediaItems];
+        [_activity stopAnimating];
+        [_activity removeFromSuperview];
     }];
 }
 
