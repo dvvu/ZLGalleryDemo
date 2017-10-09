@@ -41,8 +41,9 @@
                 
                 if (image) {
                     
+                    image = [[ImageSupporter sharedInstance] resizeImageToFit:image];
                     [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
-                    [[ImageCacher sharedInstance] setImageForKey:image forKey:_identifier];
+                    [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
                 }
             }
         }];
@@ -70,8 +71,9 @@
             
             if (image) {
                 
+                image = [[ImageSupporter sharedInstance] resizeImageToFit:image];
                 [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
-                [[ImageCacher sharedInstance] setImageForKey:image forKey:_identifier];
+                [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
             }
         }];
     } else {
@@ -94,26 +96,23 @@
         ALAssetRepresentation* defaultRepresentation = [asset defaultRepresentation];
         NSURL* url = [defaultRepresentation url];
         _creationDate = [asset valueForProperty:ALAssetPropertyDate];
-        _identifier = url.absoluteString;
+        _identifier = [url.absoluteString stringByReplacingOccurrencesOfString:@"/" withString:@""];
         _mediaType = MediaImageType;
         _imageUrl = url;
         _isSelected = NO;
+        
+        if (completion) {
+            
+            completion(self);
+        }
         
         UIImage* image = [UIImage imageWithCGImage:[defaultRepresentation fullScreenImage]];
         
         if (image) {
             
-            [[ImageSupporter sharedInstance] resizeImageToFit:image completion:^(UIImage* image) {
-                
-//                [[ContactImageMemoryCache sharedInstance] addObject:image name:url.absoluteString];
-                [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:url.absoluteString];
-                [[ImageCacher sharedInstance] setImageForKey:image forKey:url.absoluteString];
-            }];
-        }
-        
-        if (completion) {
-            
-            completion(self);
+            image = [[ImageSupporter sharedInstance] resizeImageToFit:image];
+            [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
+            [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
         }
     } else if (type == ALAssetTypeVideo) {
         
@@ -121,28 +120,24 @@
         NSURL* url = [defaultRepresentation url];
         _videoDuration = [[asset valueForProperty:ALAssetPropertyDuration] doubleValue];
         _creationDate = [asset valueForProperty:ALAssetPropertyDate];
-        _identifier = url.absoluteString;
+        _identifier = [url.absoluteString stringByReplacingOccurrencesOfString:@"/" withString:@""];
         _mediaType = MediaVideoType;
         _videoUrl = url;
         _isSelected = NO;
-    
-        UIImage* image = [UIImage imageWithCGImage:[defaultRepresentation fullScreenImage]];
-        
-        if (image) {
-            
-            [[ImageSupporter sharedInstance] resizeImageToFit:image completion:^(UIImage* image) {
-                
-//                [[ContactImageMemoryCache sharedInstance] addObject:image name:url.absoluteString];
-                [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:url.absoluteString];
-                [[ImageCacher sharedInstance] setImageForKey:image forKey:url.absoluteString];
-            }];
-        }
         
         if (completion) {
             
             completion(self);
         }
         
+        UIImage* image = [UIImage imageWithCGImage:[defaultRepresentation fullScreenImage]];
+        
+        if (image) {
+            
+            image = [[ImageSupporter sharedInstance] resizeImageToFit:image];
+            [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
+            [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
+        }
     } else {
         
         if (completion) {

@@ -68,8 +68,7 @@
             [self removeImageForKey:key completionWith:^ {
 
                 // Get size of image
-                UIImage* imageResize = [[ImageSupporter sharedInstance] resizeImageToFit:image];
-                CGFloat imageSize = [self imageSize:imageResize];
+                CGFloat imageSize = [self imageSize:image];
                 
                 // size of image < valid memory?
                 if (imageSize <= MAX_ITEM_SIZE) {
@@ -85,7 +84,7 @@
                         index++;
                     }
                     
-                    [_contactCache setObject:imageResize forKey:key];
+                    [_contactCache setObject:image forKey:key];
                     // Add size to check condition
                     _totalPixel += imageSize;
                     NSLog(@"%lu",(unsigned long)_totalPixel);

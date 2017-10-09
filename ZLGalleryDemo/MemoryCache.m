@@ -166,7 +166,7 @@ double const cacheMemoryPercentage = 0.10;
  
     if (self) {
      
-        _maxNumberOfPixel = 2*1024*1024;//[NSProcessInfo processInfo].physicalMemory * cacheMemoryPercentage / numberOfBytesPerPixel; // get 1% of physicalMemory to save image
+        _maxNumberOfPixel = 20*1024*1024;//[NSProcessInfo processInfo].physicalMemory * cacheMemoryPercentage / numberOfBytesPerPixel; // get 1% of physicalMemory to save image
     }
     
     return self;

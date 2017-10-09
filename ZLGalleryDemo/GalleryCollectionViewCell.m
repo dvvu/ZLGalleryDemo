@@ -78,7 +78,7 @@
     [_playImageView mas_makeConstraints:^(MASConstraintMaker* make) {
         
         make.center.equalTo(self);
-        make.width.and.height.mas_equalTo(self.frame.size.width/3);
+        make.width.and.height.mas_equalTo(self.frame.size.width / 3);
     }];
     
     [_videoDurationLabel mas_makeConstraints:^(MASConstraintMaker* make) {

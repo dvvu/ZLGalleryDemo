@@ -21,71 +21,34 @@
 - (void)getImageCacheForCell:(UICollectionViewCell *)cell {
     
     __weak GalleryCollectionViewCell* galleryCollectionViewCell = (GalleryCollectionViewCell *)cell;
-   
-    [[ImageCacher sharedInstance] getImageForKey:_identifier completionWith:^(UIImage* image) {
+    UIImage* image = [[ContactImageMemoryCache sharedInstance] objectForKey:_identifier];
+    
+    if (image) {
         
-        if (image) {
+        if ([_identifier isEqualToString:galleryCollectionViewCell.identifier]) {
             
-            if ([_identifier isEqualToString:galleryCollectionViewCell.identifier]) {
+            dispatch_async(dispatch_get_main_queue(), ^ {
                 
-                dispatch_async(dispatch_get_main_queue(), ^ {
-                    
-                    galleryCollectionViewCell.galaryImageView.image = image;
-                });
-            }
-        } else {
-            
-            [[ImageSupporter sharedInstance] getImageFromFolder:_identifier completion:^(UIImage* image) {
-                
-                if (image) {
-                  
-                    if ([_identifier isEqualToString:galleryCollectionViewCell.identifier]) {
-                        
-                        dispatch_async(dispatch_get_main_queue(), ^ {
-                            
-                            galleryCollectionViewCell.galaryImageView.image = image;
-                            [[ImageCacher sharedInstance] setImageForKey:image forKey:_identifier];
-                        });
-                    }
-                }
-            }];
+                galleryCollectionViewCell.galaryImageView.image = image;
+            });
         }
-    }];
-}
-
-#pragma mark - requestImageFromAsset
-
-- (void)requestImageFromAsset:(NSString *)localIdentifier completion:(void(^)(UIImage *))completion {
-    
-    PHFetchResult* savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil];
-    
-    if (savedAssets) {
-        
-        [savedAssets enumerateObjectsUsingBlock:^(PHAsset* asset, NSUInteger idx, BOOL* stop) {
-            
-            if (asset) {
-                
-                [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(IMAGE_SIZE, IMAGE_SIZE) contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage* _Nullable image, NSDictionary* _Nullable info) {
-                    
-                    NSLog(@"get image from result");
-                    
-                    if (completion) {
-                        
-                        completion(image);
-                        return;
-                    }
-                }];
-            }
-        }];
     } else {
         
-        if (completion) {
+        [[ImageSupporter sharedInstance] getImageFromFolder:_identifier completion:^(UIImage* image) {
             
-            completion(nil);
-        }
+            if (image) {
+                
+                if ([_identifier isEqualToString:galleryCollectionViewCell.identifier]) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                        
+                        galleryCollectionViewCell.galaryImageView.image = image;
+                        [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
+                    });
+                }
+            }
+        }];
     }
-    
-    savedAssets = nil;
 }
 
 @end

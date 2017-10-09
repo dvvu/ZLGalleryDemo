@@ -81,7 +81,6 @@
     
     dispatch_barrier_async(_ImageSupporterQueue, ^ {
         
-        UIImage* imageResize = [self resizeImageToFit:image];
         // For error information
         NSError* error;
         NSFileManager* fileManager = [NSFileManager defaultManager];
@@ -95,7 +94,7 @@
             [[NSFileManager defaultManager] createDirectoryAtPath:dataPath withIntermediateDirectories:NO attributes:nil error:&error];
         }
         
-        NSData* imageData = UIImagePNGRepresentation(imageResize);
+        NSData* imageData = UIImagePNGRepresentation(image);
         
         NSString* imgfileName = [NSString stringWithFormat:@"%@%@", imageName, @".png"];
         
