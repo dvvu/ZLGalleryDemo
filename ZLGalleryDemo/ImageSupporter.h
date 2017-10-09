@@ -21,7 +21,7 @@
 - (void)resizeImageToFit:(UIImage *)image completion:(void(^)(UIImage *))completion;
 
 #pragma mark - getImageFromFoder
-- (void)getImageFromFolder:(NSString *)imageName completion:(void(^)(UIImage* image))compeltion;
+- (void)getImageFromFolder:(NSString *)imageName callbackQueue:(dispatch_queue_t)queue completion:(void(^)(UIImage* image))compeltion;
 
 #pragma mark - storeImageToDirectory
 - (void)storeImageToFolder:(UIImage *)image withImageName:(NSString *)imageName;

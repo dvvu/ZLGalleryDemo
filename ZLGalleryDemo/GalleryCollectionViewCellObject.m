@@ -34,17 +34,14 @@
         }
     } else {
         
-        [[ImageSupporter sharedInstance] getImageFromFolder:_identifier completion:^(UIImage* image) {
+        [[ImageSupporter sharedInstance] getImageFromFolder:_identifier callbackQueue:dispatch_get_main_queue() completion:^(UIImage* image) {
             
             if (image) {
                 
                 if ([_identifier isEqualToString:galleryCollectionViewCell.identifier]) {
                     
-                    dispatch_async(dispatch_get_main_queue(), ^ {
-                        
-                        galleryCollectionViewCell.galaryImageView.image = image;
-                        [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
-                    });
+                    galleryCollectionViewCell.galaryImageView.image = image;
+                    [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
                 }
             }
         }];

@@ -47,7 +47,9 @@
 
 #pragma mark - getImageFromFoder
 
-- (void)getImageFromFolder:(NSString *)imageName completion:(void(^)(UIImage* image))compeltion {
+- (void)getImageFromFolder:(NSString *)imageName callbackQueue:(dispatch_queue_t)queue completion:(void(^)(UIImage* image))compeltion {
+    
+    dispatch_queue_t callbackQueue = queue != nil ? queue : dispatch_get_main_queue();
     
     dispatch_async(_ImageSupporterQueue, ^ {
         
@@ -61,12 +63,12 @@
             
             if (image) {
                 
-                dispatch_async(dispatch_get_main_queue(), ^ {
+                dispatch_async(callbackQueue, ^ {
                     
                     compeltion(image);
                 });
             } else {
-                dispatch_async(dispatch_get_main_queue(), ^ {
+                dispatch_async(callbackQueue, ^ {
                     
                     compeltion(nil);
                 });

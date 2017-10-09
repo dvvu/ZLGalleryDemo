@@ -38,20 +38,14 @@
                 }
                 
                 UIImage* image = [UIImage imageWithData:imageData];
-                
-                if (image) {
-                    
-                    image = [[ImageSupporter sharedInstance] resizeImageToFit:image];
-                    [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
-                    [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
-                }
+                [self storeImage:image withIdentifier:_identifier];
             }
         }];
     } else if (type == PHAssetMediaTypeVideo) {
         
         [[PHImageManager defaultManager] requestAVAssetForVideo:asset options:nil resultHandler:^(AVAsset* _Nullable assetVideo, AVAudioMix* _Nullable audioMix, NSDictionary* _Nullable info) {
             
-            AVURLAsset* playerAsset = (AVURLAsset*)assetVideo;
+            AVURLAsset* playerAsset = (AVURLAsset *)assetVideo;
             
             _videoDuration = ceil(playerAsset.duration.value/playerAsset.duration.timescale);
             _creationDate = [asset creationDate];
@@ -68,13 +62,7 @@
             }
             
             UIImage* image = [self thumbnailFromVideoURL:_videoUrl atCMTime:playerAsset.duration];
-            
-            if (image) {
-                
-                image = [[ImageSupporter sharedInstance] resizeImageToFit:image];
-                [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
-                [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
-            }
+            [self storeImage:image withIdentifier:_identifier];
         }];
     } else {
         
@@ -107,13 +95,7 @@
         }
         
         UIImage* image = [UIImage imageWithCGImage:[defaultRepresentation fullScreenImage]];
-        
-        if (image) {
-            
-            image = [[ImageSupporter sharedInstance] resizeImageToFit:image];
-            [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
-            [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
-        }
+        [self storeImage:image withIdentifier:_identifier];
     } else if (type == ALAssetTypeVideo) {
         
         ALAssetRepresentation* defaultRepresentation = [asset defaultRepresentation];
@@ -131,19 +113,25 @@
         }
         
         UIImage* image = [UIImage imageWithCGImage:[defaultRepresentation fullScreenImage]];
-        
-        if (image) {
-            
-            image = [[ImageSupporter sharedInstance] resizeImageToFit:image];
-            [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
-            [[ContactImageMemoryCache sharedInstance] addObject:image name:_identifier];
-        }
+        [self storeImage:image withIdentifier:_identifier];
     } else {
         
         if (completion) {
             
             completion(nil);
         }
+    }
+}
+
+#pragma mark - storeImage
+
+- (void)storeImage:(UIImage *)image withIdentifier:(NSString *)identifier {
+    
+    if (image) {
+        
+        image = [[ImageSupporter sharedInstance] resizeImageToFit:image];
+        [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:identifier];
+        [[ContactImageMemoryCache sharedInstance] addObject:image name:identifier];
     }
 }
 
