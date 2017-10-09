@@ -23,7 +23,8 @@
 		EA2FEBA81F849B5B00EE3495 /* GalleryCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEBA61F849B5B00EE3495 /* GalleryCollectionViewDataSource.m */; };
 		EA2FEBAC1F849EA200EE3495 /* GalleryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEBAB1F849EA200EE3495 /* GalleryCollectionViewCell.m */; };
 		EA2FEBAF1F849EB900EE3495 /* GalleryCollectionViewCellObject.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEBAE1F849EB900EE3495 /* GalleryCollectionViewCellObject.m */; };
-		EA2FEBB81F85084B00EE3495 /* UIImage+Supporter.m in Sources */ = {isa = PBXBuildFile; fileRef = EA2FEBB71F85084B00EE3495 /* UIImage+Supporter.m */; };
+		EA4102EC1F87935000B66C98 /* MemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4102EB1F87935000B66C98 /* MemoryCache.m */; };
+		EA4102EF1F87ABE300B66C98 /* ImageSupporter.m in Sources */ = {isa = PBXBuildFile; fileRef = EA4102EE1F87ABE300B66C98 /* ImageSupporter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,8 +70,10 @@
 		EA2FEBAB1F849EA200EE3495 /* GalleryCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryCollectionViewCell.m; sourceTree = "<group>"; };
 		EA2FEBAD1F849EB900EE3495 /* GalleryCollectionViewCellObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryCollectionViewCellObject.h; sourceTree = "<group>"; };
 		EA2FEBAE1F849EB900EE3495 /* GalleryCollectionViewCellObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryCollectionViewCellObject.m; sourceTree = "<group>"; };
-		EA2FEBB61F85084B00EE3495 /* UIImage+Supporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Supporter.h"; sourceTree = "<group>"; };
-		EA2FEBB71F85084B00EE3495 /* UIImage+Supporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Supporter.m"; sourceTree = "<group>"; };
+		EA4102EA1F87935000B66C98 /* MemoryCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemoryCache.h; sourceTree = "<group>"; };
+		EA4102EB1F87935000B66C98 /* MemoryCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemoryCache.m; sourceTree = "<group>"; };
+		EA4102ED1F87ABE300B66C98 /* ImageSupporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSupporter.h; sourceTree = "<group>"; };
+		EA4102EE1F87ABE300B66C98 /* ImageSupporter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSupporter.m; sourceTree = "<group>"; };
 		F81EA1D6C44FCAB28F480D22 /* Pods-ZLGalleryDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZLGalleryDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-ZLGalleryDemo/Pods-ZLGalleryDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,6 +175,8 @@
 		EA2FEB8C1F849B0500EE3495 /* ImageCahe */ = {
 			isa = PBXGroup;
 			children = (
+				EA4102EA1F87935000B66C98 /* MemoryCache.h */,
+				EA4102EB1F87935000B66C98 /* MemoryCache.m */,
 				EA2FEB8D1F849B0E00EE3495 /* ImageCacher.h */,
 				EA2FEB8E1F849B0E00EE3495 /* ImageCacher.m */,
 			);
@@ -224,8 +229,8 @@
 			isa = PBXGroup;
 			children = (
 				EA2FEBA91F849B6400EE3495 /* Constants.h */,
-				EA2FEBB61F85084B00EE3495 /* UIImage+Supporter.h */,
-				EA2FEBB71F85084B00EE3495 /* UIImage+Supporter.m */,
+				EA4102ED1F87ABE300B66C98 /* ImageSupporter.h */,
+				EA4102EE1F87ABE300B66C98 /* ImageSupporter.m */,
 			);
 			name = "Constant&support";
 			sourceTree = "<group>";
@@ -390,11 +395,12 @@
 				EA2FEB931F849B2400EE3495 /* ThreadSafeForMutableArray.m in Sources */,
 				EA2FEB6F1F849AD300EE3495 /* ViewController.m in Sources */,
 				EA2FEBAF1F849EB900EE3495 /* GalleryCollectionViewCellObject.m in Sources */,
-				EA2FEBB81F85084B00EE3495 /* UIImage+Supporter.m in Sources */,
 				EA2FEB8F1F849B0E00EE3495 /* ImageCacher.m in Sources */,
 				EA2FEB6C1F849AD300EE3495 /* AppDelegate.m in Sources */,
+				EA4102EC1F87935000B66C98 /* MemoryCache.m in Sources */,
 				EA2FEB691F849AD300EE3495 /* main.m in Sources */,
 				EA2FEBA71F849B5B00EE3495 /* GalleryViewController.m in Sources */,
+				EA4102EF1F87ABE300B66C98 /* ImageSupporter.m in Sources */,
 				EA2FEB991F849B3500EE3495 /* MediaItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -98,7 +98,7 @@
     
     if (hours) {
         
-        return [NSString stringWithFormat:@"%02d:%02d:%02d",hours, minutes, seconds];
+        return [NSString stringWithFormat:@"%02d:%02d:%02d", hours, minutes, seconds];
     } else {
         
         return [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];

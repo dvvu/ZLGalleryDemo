@@ -8,9 +8,11 @@
 
 #import "GalleryCollectionViewCellObject.h"
 #import "GalleryCollectionViewCell.h"
-#import "UIImage+Supporter.h"
+#import "ImageSupporter.h"
 #import <Photos/Photos.h>
 #import "ImageCacher.h"
+#import "MemoryCache.h"
+#import "MediaLoader.h"
 
 @implementation GalleryCollectionViewCellObject
 
@@ -18,9 +20,9 @@
 
 - (void)getImageCacheForCell:(UICollectionViewCell *)cell {
     
+    __weak GalleryCollectionViewCell* galleryCollectionViewCell = (GalleryCollectionViewCell *)cell;
+   
     [[ImageCacher sharedInstance] getImageForKey:_identifier completionWith:^(UIImage* image) {
-        
-        __weak GalleryCollectionViewCell* galleryCollectionViewCell = (GalleryCollectionViewCell *)cell;
         
         if (image) {
             
@@ -33,16 +35,18 @@
             }
         } else {
             
-            [self requestImageFromAsset:_identifier completion:^(UIImage* image) {
+            [[ImageSupporter sharedInstance] getImageFromFolder:_identifier completion:^(UIImage* image) {
                 
-                if(image) {
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^ {
+                if (image) {
+                  
+                    if ([_identifier isEqualToString:galleryCollectionViewCell.identifier]) {
                         
-                        galleryCollectionViewCell.galaryImageView.image = image;
-                    });
-                    
-                    [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:_identifier];
+                        dispatch_async(dispatch_get_main_queue(), ^ {
+                            
+                            galleryCollectionViewCell.galaryImageView.image = image;
+                            [[ImageCacher sharedInstance] setImageForKey:image forKey:_identifier];
+                        });
+                    }
                 }
             }];
         }
@@ -55,18 +59,33 @@
     
     PHFetchResult* savedAssets = [PHAsset fetchAssetsWithLocalIdentifiers:@[localIdentifier] options:nil];
     
-    [savedAssets enumerateObjectsUsingBlock:^(PHAsset* asset, NSUInteger idx, BOOL* stop) {
+    if (savedAssets) {
         
-        [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:PHImageManagerMaximumSize contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage* _Nullable image, NSDictionary* _Nullable info) {
+        [savedAssets enumerateObjectsUsingBlock:^(PHAsset* asset, NSUInteger idx, BOOL* stop) {
             
-            NSLog(@"get image from result");
-            
-            if (completion) {
+            if (asset) {
                 
-                completion(image);
+                [[PHImageManager defaultManager] requestImageForAsset:asset targetSize:CGSizeMake(IMAGE_SIZE, IMAGE_SIZE) contentMode:PHImageContentModeAspectFill options:nil resultHandler:^(UIImage* _Nullable image, NSDictionary* _Nullable info) {
+                    
+                    NSLog(@"get image from result");
+                    
+                    if (completion) {
+                        
+                        completion(image);
+                        return;
+                    }
+                }];
             }
         }];
-    }];
+    } else {
+        
+        if (completion) {
+            
+            completion(nil);
+        }
+    }
+    
+    savedAssets = nil;
 }
 
 @end

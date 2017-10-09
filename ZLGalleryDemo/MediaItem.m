@@ -6,8 +6,9 @@
 //  Copyright © 2017 Doan Van Vu. All rights reserved.
 //
 
-#import "UIImage+Supporter.h"
+#import "ImageSupporter.h"
 #import "ImageCacher.h"
+#import "MemoryCache.h"
 #import "MediaItem.h"
 
 @implementation MediaItem
@@ -26,7 +27,7 @@
                 
                 _imageUrl = [info objectForKey:@"PHImageFileURLKey"];
                 _creationDate = [asset creationDate];
-                _identifier = asset.localIdentifier;
+                _identifier = [asset.localIdentifier stringByReplacingOccurrencesOfString:@"/" withString:@""];
                 _mediaType = MediaImageType;
                 _inputType = AssetInput;
                 _isSelected = NO;
@@ -40,7 +41,8 @@
                 
                 if (image) {
                     
-                    [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:asset.localIdentifier];
+                    [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
+                    [[ImageCacher sharedInstance] setImageForKey:image forKey:_identifier];
                 }
             }
         }];
@@ -52,7 +54,7 @@
             
             _videoDuration = ceil(playerAsset.duration.value/playerAsset.duration.timescale);
             _creationDate = [asset creationDate];
-            _identifier = asset.localIdentifier;
+            _identifier = [asset.localIdentifier stringByReplacingOccurrencesOfString:@"/" withString:@""];
             _inputType = AssetInput;
             _videoUrl = [playerAsset URL];
             _mediaType = MediaVideoType;
@@ -68,7 +70,8 @@
             
             if (image) {
                 
-                [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:asset.localIdentifier];
+                [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:_identifier];
+                [[ImageCacher sharedInstance] setImageForKey:image forKey:_identifier];
             }
         }];
     } else {
@@ -100,7 +103,12 @@
         
         if (image) {
             
-            [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:url.absoluteString];
+            [[ImageSupporter sharedInstance] resizeImageToFit:image completion:^(UIImage* image) {
+                
+//                [[ContactImageMemoryCache sharedInstance] addObject:image name:url.absoluteString];
+                [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:url.absoluteString];
+                [[ImageCacher sharedInstance] setImageForKey:image forKey:url.absoluteString];
+            }];
         }
         
         if (completion) {
@@ -122,7 +130,12 @@
         
         if (image) {
             
-            [[ImageCacher sharedInstance] setImageForKey:[image resizeImageToFit] forKey:url.absoluteString];
+            [[ImageSupporter sharedInstance] resizeImageToFit:image completion:^(UIImage* image) {
+                
+//                [[ContactImageMemoryCache sharedInstance] addObject:image name:url.absoluteString];
+                [[ImageSupporter sharedInstance] storeImageToFolder:image withImageName:url.absoluteString];
+                [[ImageCacher sharedInstance] setImageForKey:image forKey:url.absoluteString];
+            }];
         }
         
         if (completion) {

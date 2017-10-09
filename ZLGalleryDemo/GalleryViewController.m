@@ -8,6 +8,7 @@
 
 #import "GalleryCollectionViewDataSource.h"
 #import "GalleryViewController.h"
+#import "ImageSupporter.h"
 #import "MediaLoader.h"
 #import "MediaItem.h"
 #import "Constants.h"
@@ -27,6 +28,7 @@
     
     [super viewDidLoad];
     [self setupCollectionView];
+    [[ImageSupporter sharedInstance] removeAllFromFolder];
 }
 
 #pragma mark - viewWillAppear

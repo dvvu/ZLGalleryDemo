@@ -10,6 +10,7 @@
 #import "ImageCacher.h"
 #import "MediaLoader.h"
 #import "MediaItem.h"
+#import "Constants.h"
 
 @interface MediaLoader ()
 
@@ -183,7 +184,7 @@
 }
 
 #pragma mark - getListMediaFromPHAsset
-
+// call back array mediaItem. and error
 - (void)getMediaItemsFromPHAsset:(dispatch_queue_t)callbackQueue completion:(void(^)(NSArray *, NSError *))completion {
     
     dispatch_async(_mediaLoaderQueue,^{
@@ -239,14 +240,23 @@
 }
 
 #pragma mark - getMediaItemsFromAssetsLibrary
-
+// call back array mediaItem. and error
 - (void)getMediaItemsFromAssetsLibrary:(dispatch_queue_t)callbackQueue completion:(void(^)(NSArray *, NSError *))completion {
     
     dispatch_async(_mediaLoaderQueue, ^ {
     
         ALAssetsLibrary* library = [[ALAssetsLibrary alloc] init];
+        NSMutableArray* groups = [[NSMutableArray alloc] init];
+        __block int assets = 0;
         
         [library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup* group, BOOL* stop) {
+            NSLog(@"%@",[group valueForProperty:ALAssetsGroupPropertyPersistentID]);
+            
+            if ([group valueForProperty:ALAssetsGroupPropertyPersistentID]) {
+               
+                [groups addObject:group];
+                assets += (int)group.numberOfAssets;
+            }
             
             if (group.numberOfAssets > 0) {
                 
@@ -256,7 +266,7 @@
                 }
                 
                 [group setAssetsFilter:[ALAssetsFilter allAssets]];
-
+                
                 [group enumerateAssetsUsingBlock:^(ALAsset* asset, NSUInteger index, BOOL* stop) {
                     
                     [[MediaItem alloc] initWithALAsset:asset completion:^(MediaItem* mediaItem) {
@@ -276,10 +286,12 @@
                             dispatch_async(callbackQueue, ^ {
                                 
                                 if (completion) {
-                        
+                                    
                                     completion(array, nil);
                                 }
                             });
+                            
+                            return;
                         }
                     }];
                 }];

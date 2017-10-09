@@ -7,6 +7,7 @@
 //
 
 #import "ThreadSafeForMutableArray.h"
+#import "ImageSupporter.h"
 #import "ImageCacher.h"
 #import "Constants.h"
 
@@ -50,7 +51,7 @@
         _contactCache = [[NSMutableDictionary alloc] init];
         _cacheImageQueue = dispatch_queue_create("CACHE_IMAGE_QUEUE", DISPATCH_QUEUE_SERIAL);
         
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllObjects) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reduceMemory) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     
     return self;
@@ -65,29 +66,28 @@
         if (image && key) {
             
             [self removeImageForKey:key completionWith:^ {
-                
-                // Add key into keyList
-                [_keyList addObject:key];
-                
+
                 // Get size of image
-                CGFloat pixelImage = [self imageSize:image];
+                UIImage* imageResize = [[ImageSupporter sharedInstance] resizeImageToFit:image];
+                CGFloat imageSize = [self imageSize:imageResize];
                 
                 // size of image < valid memory?
-                if (pixelImage <= MAX_ITEM_SIZE) {
+                if (imageSize <= MAX_ITEM_SIZE) {
                     
+                    [_keyList addObject:key];
                     int index = 0;
-                    while (_totalPixel > _maxCacheSize - pixelImage) {
+                    
+                    while (_totalPixel + imageSize > _maxCacheSize) {
                         
-                        CGFloat size =  [self imageSize:[_contactCache objectForKey:[_keyList objectAtIndex:index]]];
+                        CGFloat size = [self imageSize:[_contactCache objectForKey:[_keyList objectAtIndex:index]]];
                         [_contactCache removeObjectForKey:[_keyList objectAtIndex:index]];
                         _totalPixel -= size;
                         index++;
                     }
                     
-                    [_contactCache setObject:image forKey:key];
-                    
+                    [_contactCache setObject:imageResize forKey:key];
                     // Add size to check condition
-                    _totalPixel += pixelImage;
+                    _totalPixel += imageSize;
                     NSLog(@"%lu",(unsigned long)_totalPixel);
                 }
             }];
@@ -183,10 +183,12 @@
     return nil;
 }
 
+#pragma mark - reduceMemory
+
 - (void)reduceMemory {
     
     NSLog(@"Cache Error");
-    //    [_contactCache removeAllObjects];
+    [self removeImageForKey:[_keyList objectAtIndex:0] completionWith:nil];
 }
 
 @end

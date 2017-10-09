@@ -16,11 +16,11 @@
 #pragma mark public class
 + (instancetype)sharedInstance;
 
-#pragma mark - requestAuthorization
-- (void)requestAuthCallbackQueue:(dispatch_queue_t)queue completion:(void(^)(BOOL granted, MediaAuthStatus))completion;
-
 #pragma mark - checkPermission
 - (MediaAuthStatus)checkPermission;
+
+#pragma mark - requestAuthorization
+- (void)requestAuthCallbackQueue:(dispatch_queue_t)queue completion:(void(^)(BOOL granted, MediaAuthStatus))completion;
 
 #pragma mark - getMediaItems
 - (void)getMediaItemsCallbackQueue:(dispatch_queue_t)queue completion:(void(^)(NSArray* mediaItmes, NSError *))completion;
